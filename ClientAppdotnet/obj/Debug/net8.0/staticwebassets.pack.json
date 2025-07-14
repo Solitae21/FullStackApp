@@ -1,0 +1,61 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Hans\\coursera\\FullStackApp\\ClientAppdotnet\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "C:\\Hans\\coursera\\FullStackApp\\ClientAppdotnet\\obj\\Debug\\net8.0\\compressed\\94vwvpf109.gz",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+    },
+    {
+      "Id": "C:\\Hans\\coursera\\FullStackApp\\ClientAppdotnet\\obj\\Debug\\net8.0\\scopedcss\\bundle\\ClientAppdotnet.styles.css",
+      "PackagePath": "staticwebassets\\ClientAppdotnet.styles.css"
+    },
+    {
+      "Id": "C:\\Hans\\coursera\\FullStackApp\\ClientAppdotnet\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "C:\\Hans\\coursera\\FullStackApp\\ClientAppdotnet\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Hans\\coursera\\FullStackApp\\ClientAppdotnet\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Hans\\coursera\\FullStackApp\\ClientAppdotnet\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Hans\\coursera\\FullStackApp\\ClientAppdotnet\\wwwroot\\icon-192.png",
+      "PackagePath": "staticwebassets\\icon-192.png"
+    },
+    {
+      "Id": "C:\\Hans\\coursera\\FullStackApp\\ClientAppdotnet\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\Hans\\coursera\\FullStackApp\\ClientAppdotnet\\wwwroot\\sample-data\\weather.json",
+      "PackagePath": "staticwebassets\\sample-data\\weather.json"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ClientAppdotnet.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.ClientAppdotnet.props",
+      "PackagePath": "build\\ClientAppdotnet.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.ClientAppdotnet.props",
+      "PackagePath": "buildMultiTargeting\\ClientAppdotnet.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.ClientAppdotnet.props",
+      "PackagePath": "buildTransitive\\ClientAppdotnet.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

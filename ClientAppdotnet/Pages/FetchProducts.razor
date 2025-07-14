@@ -1,0 +1,184 @@
+@page "/fetchproducts"
+@using System.Text.Json
+@inject HttpClient Http
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Product List - InventoryHub</PageTitle>
+
+<h3>Product List</h3>
+
+@* Performance optimization: Show loading indicator with better UX *@
+<div class="container">
+    @if (isLoading)
+    {
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading products...</span>
+            </div>
+        </div>
+        <p class="text-center mt-2">Loading products...</p>
+    }
+    else if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Error!</h4>
+            <p>@errorMessage</p>
+            <button class="btn btn-outline-danger" @onclick="RetryLoadProducts">Retry</button>
+        </div>
+    }
+    else if (apiResponse?.Products != null && apiResponse.Products.Length > 0)
+    {
+        @* Enhanced UI with better product display *@
+        <div class="row mb-3">
+            <div class="col">
+                <p class="text-muted">
+                    Showing @apiResponse.TotalCount products | Last updated: @apiResponse.Timestamp.ToString("HH:mm:ss")
+                </p>
+            </div>
+        </div>
+        
+        <div class="row">
+            @foreach (var product in apiResponse.Products)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text">@product.Description</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="h4 text-primary">$@product.Price.ToString("F2")</span>
+                                <span class="badge @(product.Stock > 10 ? "bg-success" : product.Stock > 0 ? "bg-warning" : "bg-danger")">
+                                    @product.Stock in stock
+                                </span>
+                            </div>
+                            <small class="text-muted">
+                                <i class="fas fa-tag"></i> @product.Category?.Name
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <h4 class="alert-heading">No Products Found</h4>
+            <p>There are currently no products available in the inventory.</p>
+        </div>
+    }
+</div>
+
+@code {
+    // Optimized state management for better performance
+    // Copilot suggested using structured response model instead of simple array
+    private ApiResponse? apiResponse;
+    private string? errorMessage;
+    private bool isLoading = true;
+    private DateTime lastLoadTime = DateTime.MinValue;
+
+    // Cache duration for client-side caching optimization
+    // Copilot recommended implementing client-side caching to reduce API calls
+    private readonly TimeSpan cacheValidDuration = TimeSpan.FromMinutes(2);
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProducts();
+    }
+
+    // Optimized method with retry logic and client-side caching
+    // Copilot helped implement this pattern for better user experience
+    private async Task LoadProducts()
+    {
+        // Check if we have cached data that's still valid
+        if (apiResponse != null && DateTime.Now - lastLoadTime < cacheValidDuration)
+        {
+            Console.WriteLine("Using cached product data");
+            return;
+        }
+
+        isLoading = true;
+        errorMessage = null;
+        StateHasChanged(); // Force UI update for better responsiveness
+
+        try
+        {
+            var response = await Http.GetAsync("http://localhost:5241/api/productlist");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"JSON Response: {json}");
+                
+                // Copilot suggested using structured deserialization for better error handling
+                apiResponse = JsonSerializer.Deserialize<ApiResponse>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+                
+                lastLoadTime = DateTime.Now; // Update cache timestamp
+                Console.WriteLine($"Successfully loaded {apiResponse?.TotalCount ?? 0} products");
+            }
+            else
+            {
+                errorMessage = $"HTTP Error: {response.StatusCode} - {response.ReasonPhrase}";
+                Console.WriteLine(errorMessage);
+            }
+        }
+        catch (HttpRequestException httpEx)
+        {
+            errorMessage = $"Network error: {httpEx.Message}. Please check if the server is running.";
+            Console.WriteLine($"HTTP Exception: {httpEx}");
+        }
+        catch (JsonException jsonEx)
+        {
+            errorMessage = $"Data format error: {jsonEx.Message}";
+            Console.WriteLine($"JSON Exception: {jsonEx}");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Unexpected error: {ex.Message}";
+            Console.WriteLine($"General Exception: {ex}");
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged(); // Ensure UI updates even if there's an error
+        }
+    }
+
+    // Retry mechanism for better user experience
+    // Copilot suggested adding this for handling transient failures
+    private async Task RetryLoadProducts()
+    {
+        // Clear cache and force reload
+        apiResponse = null;
+        lastLoadTime = DateTime.MinValue;
+        await LoadProducts();
+    }
+
+    // Enhanced data models matching the optimized server response
+    // Copilot helped create these models for better type safety and performance
+    public class ApiResponse
+    {
+        public Product[] Products { get; set; } = Array.Empty<Product>();
+        public int TotalCount { get; set; }
+        public DateTime Timestamp { get; set; }
+    }
+
+    public class Product
+    {
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public double Price { get; set; }
+        public int Stock { get; set; }
+        public Category? Category { get; set; }
+        public string? Description { get; set; }
+        public string? ImageUrl { get; set; }
+    }
+
+    public class Category
+    {
+        public int Id { get; set; }
+        public string? Name { get; set; }
+    }
+}
