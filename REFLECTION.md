@@ -173,9 +173,3 @@ The resulting InventoryHub application demonstrates professional-grade full-stac
 
 This project serves as a template for future full-stack applications and showcases the power of human-AI collaboration in software development.
 
----
-
-**Author**: GitHub Copilot Assisted Development  
-**Created**: July 2025  
-**Version**: 1.0  
-**Tech Stack**: Blazor WebAssembly, ASP.NET Core 8.0, Bootstrap 5
